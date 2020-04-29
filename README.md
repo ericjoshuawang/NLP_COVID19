@@ -69,3 +69,14 @@ SAcc         | 0.128        | **0.282**
 LAcc         | 0.359        | **0.564**
 MRR          | 0.206        | **0.385**
 
+04/28/2020 02:39:18 - INFO - __main__ -   {'exact_match_top1': 17.56756756756757, 'f1_score_top1': 26.885230840315774}
+04/28/2020 02:39:18 - INFO - __main__ -   {'exact_match_top10': 25.675675675675677, 'f1_score_top10': 43.14339166481719}
+
+What is the range of incubation periods for the disease in humans?  
+
+['7.1 (6.13, 8.25) days', '3-7 days', '2‐ to 10‐day', 'three to eight days', '1 to 20 days', '7.4, 4 and 7 days', 'about 3-7 days', 'between 3 and 7 days', '4.4 (95% CI 3.8-5.1) days', 'days or even weeks']
+
+
+How long are individuals contagious, even after recovery? 
+
+['1-2 months', 'hours to months', '21 days', '4 to 6 days', 'R time units', '21 and 31 days', '1-3 days', '21 and 31 days', 'a few days', 'transiently to very few individuals']
