@@ -59,24 +59,51 @@ Additionally, DMIS-Lab provided pre-processed CORD-19 data matching the SQuAD fo
 
 Compared to the datasets used for BioBERT training and validation with annotated questions and answers, the CORD-19 dataset is unstructured with only text and phrases. Without extensive processing, the current CORD-19 data does not fit well into pre-trained BERT models.
 
-## Results
+## Results and Discussion
 
-The BioBERT model with SQuAD fine-tuning outperformed the baseline model on the BioASQ QA task.
+The BioBERT model with SQuAD fine-tuning outperformed the baseline model on the BioASQ QA task. This shows the importance of SQuAD fine-tuning.
 
-System       | `BERT-Base`  | `BERT-SQuAD`
+Models       | `BERT-Base`  | `BERT-SQuAD`
 ------------ | ----------   | --------------
 SAcc         | 0.128        | **0.282**
 LAcc         | 0.359        | **0.564**
 MRR          | 0.206        | **0.385**
 
-04/28/2020 02:39:18 - INFO - __main__ -   {'exact_match_top1': 17.56756756756757, 'f1_score_top1': 26.885230840315774}
-04/28/2020 02:39:18 - INFO - __main__ -   {'exact_match_top10': 25.675675675675677, 'f1_score_top10': 43.14339166481719}
+The SAcc score represents the fraction of questions answered correctly by the first/top element of the predicted list.
 
-What is the range of incubation periods for the disease in humans?  
+The LAcc score represents the fraction of questions answered correctly by any element of the predicted list.
 
-['7.1 (6.13, 8.25) days', '3-7 days', '2‐ to 10‐day', 'three to eight days', '1 to 20 days', '7.4, 4 and 7 days', 'about 3-7 days', 'between 3 and 7 days', '4.4 (95% CI 3.8-5.1) days', 'days or even weeks']
+```
+{'exact_match_top1': 17.56756756756757, 'f1_score_top1': 26.885230840315774}
+{'exact_match_top10': 25.675675675675677, 'f1_score_top10': 43.14339166481719}
+```
+
+The exact_match_top1 represents the fraction of correct classifications by the top 1 element.
+
+The exact_match_top10 represents the fraction of correct classifications by the top 10 element.
 
 
-How long are individuals contagious, even after recovery? 
+As the covidAsk model operated under a classification task rather than a QA task for BioBERT, the evaluation parameters are slightly different. Nonetheless, the exact_match_top1 score can be compared to the SAcc scorea; the exact_match_top10 score is more stringent than the LAcc score and thus the comparison between these two parameters isn't informative to draw a conclusion.
 
-['1-2 months', 'hours to months', '21 days', '4 to 6 days', 'R time units', '21 and 31 days', '1-3 days', '21 and 31 days', 'a few days', 'transiently to very few individuals']
+Models       | `BERT-Base`  | `BERT-SQuAD`  | `covidAsk-DenSPI`  
+------------ | ----------   | --------------| --------------
+SAcc         | 0.128        | **0.282**     | 0.176
+LAcc         | 0.359        | 0.564         | (0.257)
+MRR          | 0.206        | 0.385         | N/A
+
+Provided by the updated table, the SAcc score of 0.282 for `BERT-SQuAD` compared to the similar parameter for `covidAsk` being 0.176 suggests that the BERT model performs better if there's annotated data avaialable. As both BioBERT-SQuAD and covidAsk-DenSPI are fine-tuned on SQuAD, the difference in performance can be attributed to the pre-training corpus. BioBERT was pre-trained on PubMed corpus while DenSPI was pre-trained on Wikipedia corpus; hence BioBERT has more high quality scientific exposure and is more focused on the biomedical field than DenSPI.
+
+However due to the current limitation of data, BioBERT can't be applied directly on the unstructured CORD-19 corpus for a QA taks. Therefore, the DMIS-lab compromised by using the DenSPI model for classification and real-time answering. As the CORD-19 corpus becomes annotated, the BioBERT model can be eventually used to achieve a higher accuracy when trained and tested locally.
+
+To answer our proposed questions, we replicated the covidAsk platform and held our own covidAsk server on local host with GPUs. Using the pre-trained DenSPI model, we tested our questions to obtain the following predictions.
+
+Input question string: "What is the range of incubation periods for the disease in humans?"
+
+Output prediction vector: ['7.1 (6.13, 8.25) days', '3-7 days', '2‐ to 10‐day', 'three to eight days', '1 to 20 days', '7.4, 4 and 7 days', 'about 3-7 days', 'between 3 and 7 days', '4.4 (95% CI 3.8-5.1) days', 'days or even weeks']
+
+
+Input question string: "How long are individuals contagious, even after recovery?"
+
+Output prediction vector: ['1-2 months', 'hours to months', '21 days', '4 to 6 days', 'R time units', '21 and 31 days', '1-3 days', '21 and 31 days', 'a few days', 'transiently to very few individuals']
+
+
