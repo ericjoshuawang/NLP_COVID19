@@ -1,7 +1,5 @@
 # NLP_COVID19
-Final Project for UVA CS4501-MMM
-
-Project members: Eric Wang, Serena Jiao, Megan Cheng, Christine Cheng
+Team members: Eric Wang, Serena Jiao, Megan Cheng, Christine Cheng
 
 ## Disclaimer
 This project is based on the work of [DMIS-Lab](https://dmis.korea.ac.kr) including [BioBERT](https://github.com/dmis-lab/biobert/blob/master) and [covidAsk](https://github.com/dmis-lab/covidAsk/blob/master).
